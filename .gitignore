@@ -1,32 +1,56 @@
-# Prerequisites
-*.d
+**********Circular queue code******************
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+#include<iostream>
+using namespace std;
+struct queue{
+    int size;
+    int front;
+    int rear;
+    int *Q;
+};
+void create(struct queue *q, int size){
+    q->size=size;
+    q->front=q->rear=-1;
+    q->Q=new int[q->size];
+}
+void enqueue(struct queue *q,int x){
+    if((q->rear+1)%q->size==q->front){ // Special code  for being circular queue;
+        cout<<"Queue is full:"<<endl;
+    }
+    else{
+        q->rear=(q->rear+1)%q->size;
+        q->Q[q->rear]=x;
+    }
+}
+int dequeue(struct queue *q){
+    int x=-1;
+    if(q->front==q->rear){
+        cout<<"Queue is empty"<<endl;
+    }
+    else{
+        q->front=(q->front+1)%q->size;
+        x=q->Q[q->front];
+        
+    }
+    return x;
+}
+void display(struct queue *q){
+    for(int i=q->front+1; i<q->rear; i++){
+        cout<<q->Q[i]<<" ";
+    }
+    cout<<endl;
+}
+int main(){
+     struct queue q;
+     create(&q,6);
+     enqueue(&q,23);
+     enqueue(&q,34);
+     enqueue(&q,45);
+     enqueue(&q,45);
+     enqueue(&q,45);
+     enqueue(&q,45);
+     display(&q);
+     cout<<dequeue(&q);
+     return 0;
+}
